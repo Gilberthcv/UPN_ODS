@@ -31,4 +31,4 @@ WHERE shrtckn_pidm = sfrstcr_pidm
 GROUP BY sfrstcr_pidm, 
          sfrstcr_term_code, 
          ssbsect_subj_code, 
-         ssbsect_crse_numb
+         ssbsect_crse_numb;
