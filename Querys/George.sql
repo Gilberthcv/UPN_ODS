@@ -46,7 +46,7 @@ FROM PS_BI_HDR A JOIN PS_BI_LINE B ON B.INVOICE = A.INVOICE
                 a.INVOICE = F.INVOICE AND
                 b.LINE_SEQ_NUM = F.LINE_SEQ_NUM AND
                 CASE WHEN F.TEXT254 like '%EXEMPTION/CROSS_REF:%' THEN SUBSTR(F.TEXT254,LENGTH(F.TEXT254)-3,2) ELSE NULL END 
-                    IN ('FM','T1','TA','XM','X1','XA','YM','Y1','YA','ZM','Z1','ZA') 
+                    IN ('TF','FM','T1','TA','XM','X1','XA','YM','Y1','YA','ZM','Z1','ZA') 
     LEFT JOIN PS_BI_INSTALL_SCHE C ON C.GENERATED_INVOICE = B.INVOICE
     LEFT JOIN (SELECT DISTINCT 
                 a.SETID
