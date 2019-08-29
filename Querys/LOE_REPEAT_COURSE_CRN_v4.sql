@@ -29,14 +29,13 @@ WHERE shrtckn_pidm = sfrstcr_pidm
               AND shrtckn_term_code BETWEEN screqiv_start_term(+) AND screqiv_end_term(+) ) 
       AND sfrstcr_term_code = ssbsect_term_code 
       AND sfrstcr_crn = ssbsect_crn 
-      --NEW
       AND SFRSTCR_TERM_CODE > SHRTCKN_TERM_CODE
       AND g.SHRTCKG_SEQ_NO = (SELECT MAX(G1.SHRTCKG_SEQ_NO) 
                               FROM SHRTCKG G1
                               WHERE g.SHRTCKG_PIDM        = G1.SHRTCKG_PIDM
                                 AND g.SHRTCKG_TERM_CODE   = G1.SHRTCKG_TERM_CODE
                                 AND g.SHRTCKG_TCKN_SEQ_NO = G1.SHRTCKG_TCKN_SEQ_NO)
-      --NEW,TEST
+      --TEST
         --AND SFRSTCR_PIDM IN (188944,139706,72736)
         --AND SFRSTCR_PIDM IN (65731,55094,97876,181308)
       --TEST
