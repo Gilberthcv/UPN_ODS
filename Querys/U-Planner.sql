@@ -1,7 +1,7 @@
 
 --Institucion
-SELECT 'UPN' AS id_institucion
-    , 'Universidad Privada del Norte' AS nombre_institucion
+SELECT 'UPN' AS "id_institucion"
+    , 'Universidad Privada del Norte' AS "nombre_institucion"
 FROM DUAL;
 
 --Campus
