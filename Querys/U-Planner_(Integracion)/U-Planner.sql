@@ -44,7 +44,9 @@ WHERE SUBSTR(STVTERM_CODE,1,3) >= '219' AND SUBSTR(STVTERM_CODE,4,1) IN ('4','5'
 SELECT 'JORNADA UNICA' AS "id_jornada"
     , NULL AS "codigo_jornada"
     , 'JORNADA UNICA' AS "nombre_jornada"
-    , SUBSTR(STVMEET_CODE,1,1) AS "numero_dia"
+    , CASE WHEN SUBSTR(STVMEET_CODE,1,1) IN ('1','2','3','4','5','6','7')
+        THEN TO_NUMBER(SUBSTR(STVMEET_CODE,1,1))
+        ELSE 9 END AS "numero_dia"
     , SUBSTR(STVMEET_CODE,2,1) AS "id_bloque_hora_clase"
     , NULL AS "codigo_bloque_hora_clase"
     , STVMEET_CODE AS "nombre_bloque_hora_clase"
