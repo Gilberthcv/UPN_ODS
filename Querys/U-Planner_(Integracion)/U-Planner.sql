@@ -200,3 +200,25 @@ WHERE A.COURSE_REFERENCE_NUMBER = B.COURSE_REFERENCE_NUMBER (+)
     AND ((SUBSTR(D.STVMEET_CODE,1,1) IN ('1','2','3','4','5') AND SUBSTR(D.STVMEET_CODE,2,1) IN ('A','B','C','D','E','F','G','H','I'))
         OR D.STVMEET_CODE IN ('TC','VR') OR D.STVMEET_CODE IN ('6A','6B','6C','6D'))
 ORDER BY 2,4;
+
+--Recurso
+SELECT SLBBLDG_CAMP_CODE AS "id_campus"
+    , SLBRDEF_BLDG_CODE AS "id_edificio"
+    , NULL AS "codigo_edificio"
+    , STVBLDG_DESC AS "nombre_edificio"
+    , SLBBLDG_CAMP_CODE || '-' || SUBSTR(SLBRDEF_ROOM_NUMBER,1,2) AS "id_piso"
+    , NULL AS "codigo_piso"
+    , SLBBLDG_CAMP_CODE || '-' || SUBSTR(SLBRDEF_ROOM_NUMBER,1,2) AS "nombre_piso"
+    , SLBRDEF_BLDG_CODE || '-' || SLBRDEF_ROOM_NUMBER AS "id_recurso"
+    , NULL AS "codigo_recurso"
+    , SLBRDEF_DESC AS "nombre_recurso"
+    , SLBRDEF_CAPACITY AS "numero_capacidad"
+    , NULL AS "nm_alto"
+    , NULL AS "nm_largo"
+    , NULL AS "nm_ancho"
+    , NULL AS "numero_metros_cuadrados"
+    , NULL AS "indicador_apto_necesidad_espec"
+    --, NULL AS "indicador_apto_necesidad_especial"
+FROM SLBRDEF, SLBBLDG, STVBLDG
+WHERE SLBRDEF_BLDG_CODE = SLBBLDG_BLDG_CODE
+    AND SLBRDEF_BLDG_CODE = STVBLDG_CODE;
