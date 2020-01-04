@@ -221,4 +221,16 @@ SELECT SLBBLDG_CAMP_CODE AS "id_campus"
     --, NULL AS "indicador_apto_necesidad_especial"
 FROM SLBRDEF, SLBBLDG, STVBLDG
 WHERE SLBRDEF_BLDG_CODE = SLBBLDG_BLDG_CODE
-    AND SLBRDEF_BLDG_CODE = STVBLDG_CODE;
+    AND SLBRDEF_BLDG_CODE = STVBLDG_CODE
+    AND SLBRDEF_RMST_CODE = 'AC' AND SLBBLDG_CAMP_CODE <> 'VIR';
+
+--Recurso_TipoUso
+SELECT SLBRDEF_BLDG_CODE || '-' || SLBRDEF_ROOM_NUMBER AS "id_recurso"
+    , '' AS "id_tipo_recurso"
+    , '' AS "nombre_tipo_recurso"
+    , '' AS "id_tipo_uso"
+    , '' AS "nombre_tipo_uso"
+    , NULL AS "numero_capacidad"
+FROM SLBRDEF, SLBBLDG
+WHERE SLBRDEF_BLDG_CODE = SLBBLDG_BLDG_CODE
+    AND SLBRDEF_RMST_CODE = 'AC' AND SLBBLDG_CAMP_CODE <> 'VIR';
