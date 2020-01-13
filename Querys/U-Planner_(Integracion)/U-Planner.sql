@@ -242,7 +242,7 @@ SELECT DISTINCT
         || A.TERM_CODE_EFF AS "id_curso"
     , 'HT' AS "id_actividad"
     , NULL AS "codigo_actividad"
-    , '' AS "nombre_actividad"
+    , 'Teoría' AS "nombre_actividad"
     , D.LECTURE_MIN/2 AS "numero_bloques_semana"
     , '' AS "numero_bloques_consecutivos"
     , '' AS "cupo_academico"
@@ -260,29 +260,9 @@ SELECT DISTINCT
     CASE WHEN B.AREA_RULE IS NULL THEN B.SUBJ_CODE ELSE C.SMRARUL_SUBJ_CODE END
         || CASE WHEN B.AREA_RULE IS NULL THEN B.CRSE_NUMB_LOW ELSE C.SMRARUL_CRSE_NUMB_LOW END
         || A.TERM_CODE_EFF AS "id_curso"
-    , 'HL' AS "id_actividad"
-    , NULL AS "codigo_actividad"
-    , '' AS "nombre_actividad"
-    , D.LAB_MIN/2 AS "numero_bloques_semana"
-    , '' AS "numero_bloques_consecutivos"
-    , '' AS "cupo_academico"
-    , '' AS "indicador_horario_requerido"
-    , '' AS "indicador_sala_requerido"
-FROM LOE_PROGRAM_AREA_PRIORITY A, LOE_AREA_COURSE B, LOE_SMRARUL C, COURSE_CATALOG D
-WHERE A.TERM_CODE_EFF = B.TERM_CODE_EFF AND A.AREA = B.AREA_COURSE
-    AND A.TERM_CODE_EFF = C.SMRARUL_TERM_CODE_EFF(+) AND A.AREA = C.SMRARUL_AREA(+) AND B.AREA_RULE = C.SMRARUL_KEY_RULE(+)
-    AND A.TERM_CODE_EFF = D.ACADEMIC_PERIOD
-    AND CASE WHEN B.AREA_RULE IS NULL THEN B.SUBJ_CODE ELSE C.SMRARUL_SUBJ_CODE END = D.SUBJECT
-    AND CASE WHEN B.AREA_RULE IS NULL THEN B.CRSE_NUMB_LOW ELSE C.SMRARUL_CRSE_NUMB_LOW END = D.COURSE_NUMBER
-    AND D.LAB_MIN IS NOT NULL AND D.LAB_MIN > 0
-UNION
-SELECT DISTINCT
-    CASE WHEN B.AREA_RULE IS NULL THEN B.SUBJ_CODE ELSE C.SMRARUL_SUBJ_CODE END
-        || CASE WHEN B.AREA_RULE IS NULL THEN B.CRSE_NUMB_LOW ELSE C.SMRARUL_CRSE_NUMB_LOW END
-        || A.TERM_CODE_EFF AS "id_curso"
     , 'HP' AS "id_actividad"
     , NULL AS "codigo_actividad"
-    , '' AS "nombre_actividad"
+    , 'Práctica' AS "nombre_actividad"
     , D.OTHER_MIN/2 AS "numero_bloques_semana"
     , '' AS "numero_bloques_consecutivos"
     , '' AS "cupo_academico"
@@ -294,4 +274,24 @@ WHERE A.TERM_CODE_EFF = B.TERM_CODE_EFF AND A.AREA = B.AREA_COURSE
     AND A.TERM_CODE_EFF = D.ACADEMIC_PERIOD
     AND CASE WHEN B.AREA_RULE IS NULL THEN B.SUBJ_CODE ELSE C.SMRARUL_SUBJ_CODE END = D.SUBJECT
     AND CASE WHEN B.AREA_RULE IS NULL THEN B.CRSE_NUMB_LOW ELSE C.SMRARUL_CRSE_NUMB_LOW END = D.COURSE_NUMBER
-    AND D.OTHER_MIN IS NOT NULL AND D.OTHER_MIN > 0;
+    AND D.OTHER_MIN IS NOT NULL AND D.OTHER_MIN > 0
+UNION
+SELECT DISTINCT
+    CASE WHEN B.AREA_RULE IS NULL THEN B.SUBJ_CODE ELSE C.SMRARUL_SUBJ_CODE END
+        || CASE WHEN B.AREA_RULE IS NULL THEN B.CRSE_NUMB_LOW ELSE C.SMRARUL_CRSE_NUMB_LOW END
+        || A.TERM_CODE_EFF AS "id_curso"
+    , 'HL' AS "id_actividad"
+    , NULL AS "codigo_actividad"
+    , 'Laboratorio' AS "nombre_actividad"
+    , D.LAB_MIN/2 AS "numero_bloques_semana"
+    , '' AS "numero_bloques_consecutivos"
+    , '' AS "cupo_academico"
+    , '' AS "indicador_horario_requerido"
+    , '' AS "indicador_sala_requerido"
+FROM LOE_PROGRAM_AREA_PRIORITY A, LOE_AREA_COURSE B, LOE_SMRARUL C, COURSE_CATALOG D
+WHERE A.TERM_CODE_EFF = B.TERM_CODE_EFF AND A.AREA = B.AREA_COURSE
+    AND A.TERM_CODE_EFF = C.SMRARUL_TERM_CODE_EFF(+) AND A.AREA = C.SMRARUL_AREA(+) AND B.AREA_RULE = C.SMRARUL_KEY_RULE(+)
+    AND A.TERM_CODE_EFF = D.ACADEMIC_PERIOD
+    AND CASE WHEN B.AREA_RULE IS NULL THEN B.SUBJ_CODE ELSE C.SMRARUL_SUBJ_CODE END = D.SUBJECT
+    AND CASE WHEN B.AREA_RULE IS NULL THEN B.CRSE_NUMB_LOW ELSE C.SMRARUL_CRSE_NUMB_LOW END = D.COURSE_NUMBER
+    AND D.LAB_MIN IS NOT NULL AND D.LAB_MIN > 0;
