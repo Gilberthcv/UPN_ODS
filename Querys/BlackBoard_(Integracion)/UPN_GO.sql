@@ -41,11 +41,11 @@ select 'EXTERNAL_COURSE_KEY|EXTERNAL_PERSON_KEY|ROLE|DATA_SOURCE_KEY' from dual;
         a.sfrstcr_pidm ||
         '|S|' ||
         CASE SUBSTR(a.sfrstcr_term_code,4,1) --'UPN.<Instancia>.Banner.<Nivel>'
-            WHEN '3' THEN 'UPN.Matriculas.Banner.PDN'
-            WHEN '4' THEN 'UPN.Matriculas.Banner.UG'
-            WHEN '5' THEN 'UPN.Matriculas.Banner.WA'
-            WHEN '7' THEN 'UPN.Matriculas.Banner.Ingles'
-          ELSE 'UPN.Matriculas.Banner.EPEC' END
+            WHEN '3' THEN 'UPN.Matriculas.UPNGO.PDN'
+            WHEN '4' THEN 'UPN.Matriculas.UPNGO.UG'
+            WHEN '5' THEN 'UPN.Matriculas.UPNGO.WA'
+            WHEN '7' THEN 'UPN.Matriculas.UPNGO.Ingles'
+          ELSE 'UPN.Matriculas.UPNGO.EPEC' END
     FROM sfrstcr a,
          ssbsect b,
          SORLCUR d
