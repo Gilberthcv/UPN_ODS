@@ -29,7 +29,7 @@ select 'EXTERNAL_PERSON_KEY|USER_ID|FIRSTNAME|LASTNAME|EMAIL|ROW_STATUS|AVAILABL
         AND a.sfrstcr_pidm = f.spriden_pidm AND f.spriden_change_ind IS NULL
         AND a.sfrstcr_pidm = g.sprtele_pidm(+) AND g.sprtele_tele_code(+) = 'CP'
         AND b.ssbsect_subj_code not in ('ACAD','REPS','TEST','XPEN','XSER')
-        AND b.ssbsect_term_code in ('220413','220513');
+        AND b.ssbsect_term_code in ('220413');
   spool off
 
 --enrollments
@@ -65,7 +65,7 @@ select 'EXTERNAL_COURSE_KEY|EXTERNAL_PERSON_KEY|ROLE|DATA_SOURCE_KEY' from dual;
         AND d.SOVLCUR_LEVL_CODE = 'UG' AND d.SOVLCUR_TERM_CODE_END IS NULL
         AND d.SOVLCUR_STYP_CODE = 'N'
         AND b.ssbsect_subj_code not in ('ACAD','REPS','TEST','XPEN','XSER')
-        AND b.ssbsect_term_code in ('220413','220513');
+        AND b.ssbsect_term_code in ('220413');
   spool off
 
 --courses
@@ -110,5 +110,5 @@ select 'EXTERNAL_COURSE_KEY|COURSE_ID|COURSE_NAME|AVAILABLE_IND|ROW_STATUS|DURAT
         STVCAMP_CODE || '.PEPN01.UPN.UPNGO.' || TERM_CODE
     FROM LOE_SECTION_PART_OF_TERM, STVCAMP
     WHERE STVCAMP_CODE NOT IN ('M','VIR')
-        AND TERM_CODE IN ('220413','220513');
+        AND TERM_CODE IN ('220413');
   spool off
