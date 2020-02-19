@@ -7,7 +7,7 @@ SELECT SSBSECT_CAMP_CODE AS "id_campus"
     , NULL AS "codigo_seccion"
     , NULL AS "nombre_seccion"
     , NULL AS "codigo_grupo"
-    , NULL AS "nro_inscritos"
+    , SSBSECT_ENRL AS "nro_inscritos"
     , NULL AS "id_lista_cruzada"
     , NULL AS "indicador_curso_principal"
     , SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB AS "id_curso"
@@ -26,7 +26,7 @@ WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
     AND LECTURE_MIN IS NOT NULL AND LECTURE_MIN > 0
     AND STATUS = 'A' AND COLLEGE <> 'GR'
     AND SSBSECT_SUBJ_CODE NOT IN ('ACAD','REPS','TEST','XPEN','XSER')
-    AND SSBSECT_TERM_CODE IN ('219435','219534')
+    AND SSBSECT_TERM_CODE IN ('219435')
 UNION
 SELECT SSBSECT_CAMP_CODE AS "id_campus"
     , SSBSECT_TERM_CODE AS "id_periodo_academico"
@@ -35,7 +35,7 @@ SELECT SSBSECT_CAMP_CODE AS "id_campus"
     , NULL AS "codigo_seccion"
     , NULL AS "nombre_seccion"
     , NULL AS "codigo_grupo"
-    , NULL AS "nro_inscritos"
+    , SSBSECT_ENRL AS "nro_inscritos"
     , NULL AS "id_lista_cruzada"
     , NULL AS "indicador_curso_principal"
     , SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB AS "id_curso"
@@ -54,7 +54,7 @@ WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
     AND OTHER_MIN IS NOT NULL AND OTHER_MIN > 0
     AND STATUS = 'A' AND COLLEGE <> 'GR'
     AND SSBSECT_SUBJ_CODE NOT IN ('ACAD','REPS','TEST','XPEN','XSER')
-    AND SSBSECT_TERM_CODE IN ('219435','219534')
+    AND SSBSECT_TERM_CODE IN ('219435')
 UNION
 SELECT SSBSECT_CAMP_CODE AS "id_campus"
     , SSBSECT_TERM_CODE AS "id_periodo_academico"
@@ -63,7 +63,7 @@ SELECT SSBSECT_CAMP_CODE AS "id_campus"
     , NULL AS "codigo_seccion"
     , NULL AS "nombre_seccion"
     , NULL AS "codigo_grupo"
-    , NULL AS "nro_inscritos"
+    , SSBSECT_ENRL AS "nro_inscritos"
     , NULL AS "id_lista_cruzada"
     , NULL AS "indicador_curso_principal"
     , SSBSECT_SUBJ_CODE || SSBSECT_CRSE_NUMB AS "id_curso"
@@ -82,8 +82,7 @@ WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
     AND LAB_MIN IS NOT NULL AND LAB_MIN > 0
     AND STATUS = 'A' AND COLLEGE <> 'GR'
     AND SSBSECT_SUBJ_CODE NOT IN ('ACAD','REPS','TEST','XPEN','XSER')
-    AND SSBSECT_TERM_CODE IN ('219435')
-ORDER BY 2,4;
+    AND SSBSECT_TERM_CODE IN ('219435');
 
 --ProgramacionClases_yyyymmdd.csv
 SELECT SSBSECT_CAMP_CODE AS "id_campus"
@@ -102,7 +101,7 @@ SELECT SSBSECT_CAMP_CODE AS "id_campus"
         WHEN 'F' THEN 5 --VIERNES 
         WHEN 'S' THEN 6 --SABADO 
         WHEN 'U' THEN 7 --DOMINGO 
-        ELSE NULL END AS "nro_dia"  --REVISAR*
+        ELSE NULL END AS "nro_dia"
     , SUBSTR(SSRMEET_BEGIN_TIME,1,2) ||':'|| SUBSTR(SSRMEET_BEGIN_TIME,3,2) AS "hora_inicio"
     , SUBSTR(SSRMEET_END_TIME,1,2) ||':'|| SUBSTR(SSRMEET_END_TIME,3,2) AS "hora_termino"
     , NULL AS "nro_modulo"
@@ -119,19 +118,18 @@ WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
 SELECT SFRSTCR_TERM_CODE AS "id_periodo_academico"
     , SFRSTCR_CRN AS "id_seccion"
     , NULL AS "codigo_grupo"
-    , SPRIDEN_ID AS "id_estudiante"
+    , SFRSTCR_PIDM AS "id_estudiante"
     , NULL AS "id_plan_estudio"
     , NULL AS "indicador_sancionado"
-FROM SFRSTCR, SPRIDEN
-WHERE SFRSTCR_PIDM = SPRIDEN_PIDM AND SPRIDEN_CHANGE_IND IS NULL
-    AND SFRSTCR_RSTS_CODE IN ('RE','RW','RA')
+FROM SFRSTCR
+WHERE SFRSTCR_RSTS_CODE IN ('RE','RW','RA')
     AND SFRSTCR_TERM_CODE IN ('219435');
 
 --Docente_Seccion_yyyymmdd.csv
 SELECT DISTINCT SIRASGN_TERM_CODE AS "id_periodo"
     , SIRASGN_CRN AS "id_seccion"
-    , SPRIDEN_ID AS "id_docente"
-    , SIRASGN_CATEGORY AS "id_categoria"    --REVISAR*
+    , SIRASGN_PIDM AS "id_docente"
+    , SIRASGN_CATEGORY AS "id_categoria"
     , CASE WHEN SIRASGN_PRIMARY_IND = 'Y' 
         THEN 1 ELSE 0 END AS "ind_principal"
 FROM SIRASGN, SIBINST S, SPRIDEN
@@ -142,3 +140,22 @@ WHERE SIRASGN_PIDM = SIBINST_PIDM
                                         AND S1.SIBINST_TERM_CODE_EFF < SIRASGN_TERM_CODE)
     AND SIRASGN_PIDM = SPRIDEN_PIDM AND SPRIDEN_CHANGE_IND IS NULL
     AND SIRASGN_TERM_CODE IN ('219435');
+
+--Estudiante_yyyymmdd.csv
+SELECT SPRIDEN_PIDM AS "id_estudiante"
+    , SPRIDEN_ID AS "codigo_estudiante"
+    , SPRIDEN_ID AS "username"
+    , SPRIDEN_FIRST_NAME AS "nombres_estudiante"
+    , CASE WHEN INSTR(SPRIDEN_LAST_NAME,'/',1,1) = 0 
+            THEN SPRIDEN_LAST_NAME 
+        ELSE SUBSTR(SPRIDEN_LAST_NAME,1,INSTR(SPRIDEN_LAST_NAME,'/',1,1)-1) END AS "apellido_paterno"
+    , CASE WHEN INSTR(SPRIDEN_LAST_NAME,'/',1,1) = 0 
+            THEN NULL 
+        ELSE SUBSTR(SPRIDEN_LAST_NAME,INSTR(SPRIDEN_LAST_NAME,'/',1,1)+1) END AS "apellido_materno"
+    , SPRIDEN_ID || '@upn.pe' AS "correo_electronico_estudiante"
+    , NULL AS "foto"
+FROM SPRIDEN
+WHERE SPRIDEN_CHANGE_IND IS NULL
+    AND SPRIDEN_PIDM IN (SELECT DISTINCT SFRSTCR_PIDM FROM SFRSTCR
+                        WHERE SFRSTCR_RSTS_CODE IN ('RE','RW','RA')
+                            AND SFRSTCR_TERM_CODE IN ('219435'));
