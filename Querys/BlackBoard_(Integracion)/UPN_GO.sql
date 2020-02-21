@@ -35,7 +35,7 @@ select 'EXTERNAL_PERSON_KEY|USER_ID|FIRSTNAME|LASTNAME|EMAIL|ROW_STATUS|AVAILABL
 --enrollments
 select 'EXTERNAL_COURSE_KEY|EXTERNAL_PERSON_KEY|ROLE|DATA_SOURCE_KEY' from dual;
     SELECT DISTINCT
-        'UPNGO.' || a.sfrstcr_term_code ||'.'|| 
+        'UPN.GO.' || a.sfrstcr_term_code ||'.'|| 
             CASE SOVLCUR_CAMP_CODE 
                 WHEN 'CAJ' THEN 'CAJAMARCA' 
                 WHEN 'LC0' THEN 'BRENA' 
@@ -71,7 +71,7 @@ select 'EXTERNAL_COURSE_KEY|EXTERNAL_PERSON_KEY|ROLE|DATA_SOURCE_KEY' from dual;
 --courses
 select 'EXTERNAL_COURSE_KEY|COURSE_ID|COURSE_NAME|AVAILABLE_IND|ROW_STATUS|DURATION|START_DATE|END_DATE|TERM_KEY|DATA_SOURCE_KEY|PRIMARY_EXTERNAL_NODE_KEY|EXTERNAL_ASSOCIATION_KEY' from dual;
     SELECT
-        'UPNGO.' || TERM_CODE ||'.'|| 
+        'UPN.GO.' || TERM_CODE ||'.'|| 
             CASE STVCAMP_CODE 
                 WHEN 'CAJ' THEN 'CAJAMARCA' 
                 WHEN 'LC0' THEN 'BRENA' 
@@ -82,7 +82,7 @@ select 'EXTERNAL_COURSE_KEY|COURSE_ID|COURSE_NAME|AVAILABLE_IND|ROW_STATUS|DURAT
                 WHEN 'TML' THEN 'TRUJILLO' 
                 WHEN 'TSI' THEN 'TRUJILLOSI' 
             ELSE NULL END ||'|'||
-        'UPNGO.' || TERM_CODE ||'.'|| 
+        'UPN.GO.' || TERM_CODE ||'.'|| 
             CASE STVCAMP_CODE 
                 WHEN 'CAJ' THEN 'CAJAMARCA' 
                 WHEN 'LC0' THEN 'BRENA' 
