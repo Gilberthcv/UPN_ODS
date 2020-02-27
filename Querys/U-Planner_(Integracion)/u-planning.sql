@@ -227,11 +227,13 @@ WHERE SLBRDEF_BLDG_CODE = SLBBLDG_BLDG_CODE
 SELECT SLBRDEF_BLDG_CODE || '-' || SLBRDEF_ROOM_NUMBER AS "id_recurso"
     , '' AS "id_tipo_recurso"
     , '' AS "nombre_tipo_recurso"
-    , '' AS "id_tipo_uso"
-    , '' AS "nombre_tipo_uso"
+    , SLRRDEF_RDEF_CODE AS "id_tipo_uso"
+    , STVRDEF_DESC AS "nombre_tipo_uso"
     , NULL AS "numero_capacidad"
-FROM SLBRDEF, SLBBLDG
+FROM SLBRDEF, SLBBLDG, LOE_SLRRDEF, STVRDEF
 WHERE SLBRDEF_BLDG_CODE = SLBBLDG_BLDG_CODE
+	AND SLBRDEF_BLDG_CODE = SLRRDEF_BLDG_CODE(+) AND SLBRDEF_ROOM_NUMBER = SLRRDEF_ROOM_NUMBER(+)
+	AND SLRRDEF_RDEF_CODE = STVRDEF_CODE(+)
     AND SLBRDEF_RMST_CODE = 'AC' AND SLBBLDG_CAMP_CODE <> 'VIR';
 
 --Curso_Actividad_yyyymmdd.csv
