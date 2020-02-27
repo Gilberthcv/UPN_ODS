@@ -10,7 +10,7 @@ select 'EXTERNAL_PERSON_KEY|USER_ID|FIRSTNAME|LASTNAME|EMAIL|ROW_STATUS|AVAILABL
             ELSE 'DISABLED' END ||'|'||
         CASE WHEN c.sfbetrm_ests_code = 'EL' THEN 'Y'
             ELSE 'N' END ||'|'||
-        'UPN.Usuarios.UPNGO' ||'|'||
+        'UPN.Usuarios.Banner' ||'|'||
         MAX(case when g.sprtele_tele_code = 'CP' then g.sprtele_phone_number else null end) OVER(PARTITION BY g.sprtele_pidm)
     FROM sfrstcr a,
          ssbsect b,
