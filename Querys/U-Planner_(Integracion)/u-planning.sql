@@ -165,77 +165,6 @@ WHERE A.TERM_CODE_EFF = B.TERM_CODE_EFF AND A.AREA = B.AREA_COURSE
     AND A.TERM_CODE_EFF = C.SMRARUL_TERM_CODE_EFF(+) AND A.AREA = C.SMRARUL_AREA(+) AND B.AREA_RULE = C.SMRARUL_KEY_RULE(+)
     AND SUBSTR(A.AREA,LENGTH(A.AREA)-1,2) IN ('00','01','02','03','04','05','06','07','08','09','10','11','12','13','14');
 
---Campus_Periodo_Jornada_Plan_yyyymmdd.csv
-SELECT DISTINCT SOBCURR_CAMP_CODE AS "id_campus"
-    , STVTERM_CODE AS "id_periodo_academico"
-    , 'JORNADA UNICA' AS "id_jornada"
-    , PROGRAM  || '.'|| TERM_CODE_EFF AS "id_plan_estudio"
-FROM LOE_SOBCURR , LOE_PROGRAM_AREA_PRIORITY, LOE_STVTERM
-WHERE SOBCURR_PROGRAM = PROGRAM
-    AND STVTERM_CODE IN ('219413','219513','219435','219534','220413','220513');    --INGRESAR_PERIODO_NUEVO
-
---DisponibilidadDocente_yyyymmdd.csv
-SELECT DISTINCT A.CAMPUS AS "id_campus"
-    , C.PERSON_UID AS "id_docente"
-    , NULL AS "nombre_docente"
-    , D.STVMEET_CODE AS "bloque_horario"
-    , NULL AS "hora_inicio"
-    , NULL AS "hora_fin"
-    , NULL AS "lunes"
-    , NULL AS "martes"
-    , NULL AS "miercoles"
-    , NULL AS "jueves"
-    , NULL AS "viernes"
-    , NULL AS "sabado"
-    , NULL AS "domingo"
-FROM SCHEDULE_OFFERING A, MEETING_TIME B, INSTRUCTIONAL_ASSIGNMENT C, STVMEET D
-WHERE A.COURSE_REFERENCE_NUMBER = B.COURSE_REFERENCE_NUMBER (+)
-    AND A.ACADEMIC_PERIOD = B.ACADEMIC_PERIOD(+)
-    AND A.COURSE_REFERENCE_NUMBER = C.COURSE_REFERENCE_NUMBER (+)
-    AND A.ACADEMIC_PERIOD = C.ACADEMIC_PERIOD(+)
-    AND B.CATEGORY = C.CATEGORY (+)
-    AND A.ACADEMIC_PERIOD = '219435'    --INGRESAR_PERIODO_HISTORIA
-    AND A.STATUS = 'A'
-    AND ((SUBSTR(D.STVMEET_CODE,1,1) IN ('1','2','3','4','5') AND SUBSTR(D.STVMEET_CODE,2,1) IN ('A','B','C','D','E','F','G','H','I'))
-        OR D.STVMEET_CODE IN ('TC','VR') OR D.STVMEET_CODE IN ('6A','6B','6C','6D'))
-ORDER BY 2,4;
-
---Recurso_yyyymmdd.csv
-SELECT SLBBLDG_CAMP_CODE AS "id_campus"
-    , SLBRDEF_BLDG_CODE AS "id_edificio"
-    , NULL AS "codigo_edificio"
-    , STVBLDG_DESC AS "nombre_edificio"
-    , SLBBLDG_CAMP_CODE || '-' || SUBSTR(SLBRDEF_ROOM_NUMBER,1,2) AS "id_piso"
-    , NULL AS "codigo_piso"
-    , SLBBLDG_CAMP_CODE || '-' || SUBSTR(SLBRDEF_ROOM_NUMBER,1,2) AS "nombre_piso"
-    , SLBRDEF_BLDG_CODE || '-' || SLBRDEF_ROOM_NUMBER AS "id_recurso"
-    , NULL AS "codigo_recurso"
-    , SLBRDEF_DESC AS "nombre_recurso"
-    , SLBRDEF_CAPACITY AS "numero_capacidad"
-    , NULL AS "nm_alto"
-    , NULL AS "nm_largo"
-    , NULL AS "nm_ancho"
-    , NULL AS "numero_metros_cuadrados"
-    , NULL AS "indicador_apto_necesidad_espec"
-    --, NULL AS "indicador_apto_necesidad_especial"
-FROM SLBRDEF, SLBBLDG, STVBLDG
-WHERE SLBRDEF_BLDG_CODE = SLBBLDG_BLDG_CODE
-    AND SLBRDEF_BLDG_CODE = STVBLDG_CODE
-    AND SLBRDEF_RMST_CODE = 'AC' AND SLBBLDG_CAMP_CODE <> 'VIR';
-
---Recurso_TipoUso_yyyymmdd.csv
-SELECT SLBRDEF_BLDG_CODE || '-' || SLBRDEF_ROOM_NUMBER AS "id_recurso"
-    , '' AS "id_tipo_recurso"
-    , '' AS "nombre_tipo_recurso"
-    , SLRRDEF_RDEF_CODE AS "id_tipo_uso"
-    , STVRDEF_DESC AS "nombre_tipo_uso"
-    , NULL AS "numero_capacidad"
-FROM SLBRDEF, SLBBLDG, LOE_SLRRDEF, STVRDEF
-WHERE SLBRDEF_BLDG_CODE = SLBBLDG_BLDG_CODE
-	AND SLBRDEF_BLDG_CODE = SLRRDEF_BLDG_CODE(+) AND SLBRDEF_ROOM_NUMBER = SLRRDEF_ROOM_NUMBER(+)
-	AND SLRRDEF_RDEF_CODE = STVRDEF_CODE(+)
-    AND SLBRDEF_RMST_CODE = 'AC' AND SLBBLDG_CAMP_CODE <> 'VIR';
-
 --Curso_Actividad_yyyymmdd.csv
 SELECT DISTINCT
     CASE WHEN B.AREA_RULE IS NULL THEN B.SUBJ_CODE ELSE C.SMRARUL_SUBJ_CODE END
@@ -244,8 +173,8 @@ SELECT DISTINCT
     , 'HT' AS "id_actividad"
     , NULL AS "codigo_actividad"
     , 'Teoría' AS "nombre_actividad"
-    , D.LECTURE_MIN/2 AS "numero_bloques_semana"
-    , D.LECTURE_MIN/2 AS "numero_bloques_consecutivos"
+    , ROUND(D.LECTURE_MIN/2,0) AS "numero_bloques_semana"
+    , ROUND(D.LECTURE_MIN/2,0) AS "numero_bloques_consecutivos"
     , 60 AS "cupo_academico"
     , 1 AS "indicador_horario_requerido"
     , 1 AS "indicador_sala_requerido"
@@ -265,8 +194,8 @@ SELECT DISTINCT
     , 'HP' AS "id_actividad"
     , NULL AS "codigo_actividad"
     , 'Práctica' AS "nombre_actividad"
-    , D.OTHER_MIN/2 AS "numero_bloques_semana"
-    , D.OTHER_MIN/2 AS "numero_bloques_consecutivos"
+    , ROUND(D.OTHER_MIN/2,0) AS "numero_bloques_semana"
+    , ROUND(D.OTHER_MIN/2,0) AS "numero_bloques_consecutivos"
     , 60 AS "cupo_academico"
     , 1 AS "indicador_horario_requerido"
     , 1 AS "indicador_sala_requerido"
@@ -286,8 +215,8 @@ SELECT DISTINCT
     , 'HL' AS "id_actividad"
     , NULL AS "codigo_actividad"
     , 'Laboratorio' AS "nombre_actividad"
-    , D.LAB_MIN/2 AS "numero_bloques_semana"
-    , D.LAB_MIN/2 AS "numero_bloques_consecutivos"
+    , ROUND(D.LAB_MIN/2,0) AS "numero_bloques_semana"
+    , ROUND(D.LAB_MIN/2,0) AS "numero_bloques_consecutivos"
     , 60 AS "cupo_academico"
     , 1 AS "indicador_horario_requerido"
     , 1 AS "indicador_sala_requerido"
@@ -345,6 +274,51 @@ WHERE A.TERM_CODE_EFF = B.TERM_CODE_EFF AND A.AREA = B.AREA_COURSE
     AND CASE WHEN B.AREA_RULE IS NULL THEN B.CRSE_NUMB_LOW ELSE C.SMRARUL_CRSE_NUMB_LOW END = D.COURSE_NUMBER
     AND D.LAB_MIN IS NOT NULL AND D.LAB_MIN > 0
     AND D.STATUS = 'A' AND D.ACADEMIC_PERIOD = '999999' AND D.COLLEGE <> 'GR';
+    
+--Campus_Periodo_Jornada_Plan_yyyymmdd.csv
+SELECT DISTINCT SOBCURR_CAMP_CODE AS "id_campus"
+    , STVTERM_CODE AS "id_periodo_academico"
+    , 'JORNADA UNICA' AS "id_jornada"
+    , PROGRAM  || '.'|| TERM_CODE_EFF AS "id_plan_estudio"
+FROM LOE_SOBCURR , LOE_PROGRAM_AREA_PRIORITY, LOE_STVTERM
+WHERE SOBCURR_PROGRAM = PROGRAM
+    AND STVTERM_CODE IN ('220413');    --INGRESAR_PERIODO_NUEVO
+
+--Recurso_yyyymmdd.csv
+SELECT SLBBLDG_CAMP_CODE AS "id_campus"
+    , SLBRDEF_BLDG_CODE AS "id_edificio"
+    , NULL AS "codigo_edificio"
+    , STVBLDG_DESC AS "nombre_edificio"
+    , SLBBLDG_CAMP_CODE || '-' || SUBSTR(SLBRDEF_ROOM_NUMBER,1,2) AS "id_piso"
+    , NULL AS "codigo_piso"
+    , SLBBLDG_CAMP_CODE || '-' || SUBSTR(SLBRDEF_ROOM_NUMBER,1,2) AS "nombre_piso"
+    , SLBRDEF_BLDG_CODE || '-' || SLBRDEF_ROOM_NUMBER AS "id_recurso"
+    , NULL AS "codigo_recurso"
+    , SLBRDEF_DESC AS "nombre_recurso"
+    , SLBRDEF_CAPACITY AS "numero_capacidad"
+    , NULL AS "nm_alto"
+    , NULL AS "nm_largo"
+    , NULL AS "nm_ancho"
+    , NULL AS "numero_metros_cuadrados"
+    , NULL AS "indicador_apto_necesidad_espec"
+    --, NULL AS "indicador_apto_necesidad_especial"
+FROM SLBRDEF, SLBBLDG, STVBLDG
+WHERE SLBRDEF_BLDG_CODE = SLBBLDG_BLDG_CODE
+    AND SLBRDEF_BLDG_CODE = STVBLDG_CODE
+    AND SLBRDEF_RMST_CODE = 'AC' AND SLBBLDG_CAMP_CODE <> 'VIR';
+
+--Recurso_TipoUso_yyyymmdd.csv
+SELECT SLBRDEF_BLDG_CODE || '-' || SLBRDEF_ROOM_NUMBER AS "id_recurso"
+    , '' AS "id_tipo_recurso"
+    , '' AS "nombre_tipo_recurso"
+    , SLRRDEF_RDEF_CODE AS "id_tipo_uso"
+    , STVRDEF_DESC AS "nombre_tipo_uso"
+    , NULL AS "numero_capacidad"
+FROM SLBRDEF, SLBBLDG, LOE_SLRRDEF, STVRDEF
+WHERE SLBRDEF_BLDG_CODE = SLBBLDG_BLDG_CODE
+	AND SLBRDEF_BLDG_CODE = SLRRDEF_BLDG_CODE(+) AND SLBRDEF_ROOM_NUMBER = SLRRDEF_ROOM_NUMBER(+)
+	AND SLRRDEF_RDEF_CODE = STVRDEF_CODE(+)
+    AND SLBRDEF_RMST_CODE = 'AC' AND SLBBLDG_CAMP_CODE <> 'VIR';
 
 --Demanda_yyyymmdd.csv
 SELECT DISTINCT 'UPN' AS "id_institucion"
@@ -372,8 +346,35 @@ WHERE A.TERM_CODE_EFF = B.TERM_CODE_EFF AND A.AREA = B.AREA_COURSE
     AND CASE WHEN B.AREA_RULE IS NULL THEN B.SUBJ_CODE ELSE C.SMRARUL_SUBJ_CODE END = D.SUBJECT
     AND CASE WHEN B.AREA_RULE IS NULL THEN B.CRSE_NUMB_LOW ELSE C.SMRARUL_CRSE_NUMB_LOW END = D.COURSE_NUMBER
     AND D.STATUS = 'A' AND D.ACADEMIC_PERIOD = '999999' AND D.COLLEGE <> 'GR'
-    AND STVCAMP_CODE IN ('TML','TSI')   --INGRESAR_CAMPUS_HISTORIA
-    AND STVTERM_CODE IN ('219435');     --INGRESAR_PERIODO_HISTORIA
+    AND STVTERM_CODE IN ('220413');     --INGRESAR_PERIODO_NUEVO
+
+--------------------
+
+--DisponibilidadDocente_yyyymmdd.csv
+SELECT DISTINCT A.CAMPUS AS "id_campus"
+    , C.PERSON_UID AS "id_docente"
+    , NULL AS "nombre_docente"
+    , D.STVMEET_CODE AS "bloque_horario"
+    , NULL AS "hora_inicio"
+    , NULL AS "hora_fin"
+    , NULL AS "lunes"
+    , NULL AS "martes"
+    , NULL AS "miercoles"
+    , NULL AS "jueves"
+    , NULL AS "viernes"
+    , NULL AS "sabado"
+    , NULL AS "domingo"
+FROM SCHEDULE_OFFERING A, MEETING_TIME B, INSTRUCTIONAL_ASSIGNMENT C, STVMEET D
+WHERE A.COURSE_REFERENCE_NUMBER = B.COURSE_REFERENCE_NUMBER (+)
+    AND A.ACADEMIC_PERIOD = B.ACADEMIC_PERIOD(+)
+    AND A.COURSE_REFERENCE_NUMBER = C.COURSE_REFERENCE_NUMBER (+)
+    AND A.ACADEMIC_PERIOD = C.ACADEMIC_PERIOD(+)
+    AND B.CATEGORY = C.CATEGORY (+)
+    AND A.ACADEMIC_PERIOD = '219435'    --INGRESAR_PERIODO_HISTORIA
+    AND A.STATUS = 'A'
+    AND ((SUBSTR(D.STVMEET_CODE,1,1) IN ('1','2','3','4','5') AND SUBSTR(D.STVMEET_CODE,2,1) IN ('A','B','C','D','E','F','G','H','I'))
+        OR D.STVMEET_CODE IN ('TC','VR') OR D.STVMEET_CODE IN ('6A','6B','6C','6D'))
+ORDER BY 2,4;
 
 --Docente_Curso_Actividad_yyyymmdd.csv
 SELECT DISTINCT A.CAMPUS AS "id_campus"
