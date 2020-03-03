@@ -353,7 +353,7 @@ WHERE A.TERM_CODE_EFF = B.TERM_CODE_EFF AND A.AREA = B.AREA_COURSE
 --DisponibilidadDocente_yyyymmdd.csv
 SELECT DISTINCT A.CAMPUS AS "id_campus"
     , C.PERSON_UID AS "id_docente"
-    , NULL AS "nombre_docente"
+    , C.INSTRUCTOR_NAME AS "nombre_docente" --OPCIONAL
     , D.STVMEET_CODE AS "bloque_horario"
     , NULL AS "hora_inicio"
     , NULL AS "hora_fin"
