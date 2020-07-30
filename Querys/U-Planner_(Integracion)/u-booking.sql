@@ -4,9 +4,9 @@ SELECT SSBSECT_CAMP_CODE AS "id_campus"
     , SSBSECT_TERM_CODE AS "id_periodo_academico"
     , 'JORNADA UNICA' AS "id_jornada"
     , SSBSECT_CRN AS "id_seccion"
-    , NULL AS "codigo_seccion"
-    , NULL AS "nombre_seccion"
-    , NULL AS "codigo_grupo"
+    , SSBSECT_CRN AS "codigo_seccion"
+    , SSBSECT_TERM_CODE || SSBSECT_CRN || ' - ' || TITLE_SHORT_DESC AS "nombre_seccion"
+    , 0 AS "codigo_grupo"
     , SSBSECT_ENRL AS "nro_inscritos"
     , NULL AS "id_lista_cruzada"
     , NULL AS "indicador_curso_principal"
@@ -16,8 +16,8 @@ SELECT SSBSECT_CAMP_CODE AS "id_campus"
     , NULL AS "nombre_actividad"
     , NULL AS "id_liga"
     , NULL AS "indicador_seccion_padre"
-    , NULL AS "id_modalidad"
-    , NULL AS "nombre_modalidad"
+    , SSBSECT_INSM_CODE AS "id_modalidad"
+    , SSBSECT_INSM_CODE AS "nombre_modalidad"
 FROM ODSMGR.LOE_SSBSECT, ODSMGR.SSRMEET, ODSMGR.COURSE_CATALOG
 WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
     AND SSBSECT_SSTS_CODE = 'A' AND SSBSECT_MAX_ENRL > 0 AND SSBSECT_ENRL > 0
@@ -26,15 +26,15 @@ WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
     AND LECTURE_MIN IS NOT NULL AND LECTURE_MIN > 0
     AND STATUS = 'A' AND COLLEGE <> 'GR'
     AND SSBSECT_SUBJ_CODE NOT IN ('ACAD','REPS','TEST','XPEN','XSER')
-    AND SSBSECT_TERM_CODE IN ('219435')
+    AND SSBSECT_TERM_CODE IN ('220435')
 UNION
 SELECT SSBSECT_CAMP_CODE AS "id_campus"
     , SSBSECT_TERM_CODE AS "id_periodo_academico"
     , 'JORNADA UNICA' AS "id_jornada"
     , SSBSECT_CRN AS "id_seccion"
-    , NULL AS "codigo_seccion"
-    , NULL AS "nombre_seccion"
-    , NULL AS "codigo_grupo"
+    , SSBSECT_CRN AS "codigo_seccion"
+    , SSBSECT_TERM_CODE || SSBSECT_CRN || ' - ' || TITLE_SHORT_DESC AS "nombre_seccion"
+    , 0 AS "codigo_grupo"
     , SSBSECT_ENRL AS "nro_inscritos"
     , NULL AS "id_lista_cruzada"
     , NULL AS "indicador_curso_principal"
@@ -44,8 +44,8 @@ SELECT SSBSECT_CAMP_CODE AS "id_campus"
     , NULL AS "nombre_actividad"
     , NULL AS "id_liga"
     , NULL AS "indicador_seccion_padre"
-    , NULL AS "id_modalidad"
-    , NULL AS "nombre_modalidad"
+    , SSBSECT_INSM_CODE AS "id_modalidad"
+    , SSBSECT_INSM_CODE AS "nombre_modalidad"
 FROM ODSMGR.LOE_SSBSECT, ODSMGR.SSRMEET, ODSMGR.COURSE_CATALOG
 WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
     AND SSBSECT_SSTS_CODE = 'A' AND SSBSECT_MAX_ENRL > 0 AND SSBSECT_ENRL > 0
@@ -54,15 +54,15 @@ WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
     AND OTHER_MIN IS NOT NULL AND OTHER_MIN > 0
     AND STATUS = 'A' AND COLLEGE <> 'GR'
     AND SSBSECT_SUBJ_CODE NOT IN ('ACAD','REPS','TEST','XPEN','XSER')
-    AND SSBSECT_TERM_CODE IN ('219435')
+    AND SSBSECT_TERM_CODE IN ('220435')
 UNION
 SELECT SSBSECT_CAMP_CODE AS "id_campus"
     , SSBSECT_TERM_CODE AS "id_periodo_academico"
     , 'JORNADA UNICA' AS "id_jornada"
     , SSBSECT_CRN AS "id_seccion"
-    , NULL AS "codigo_seccion"
-    , NULL AS "nombre_seccion"
-    , NULL AS "codigo_grupo"
+    , SSBSECT_CRN AS "codigo_seccion"
+    , SSBSECT_TERM_CODE || SSBSECT_CRN || ' - ' || TITLE_SHORT_DESC AS "nombre_seccion"
+    , 0 AS "codigo_grupo"
     , SSBSECT_ENRL AS "nro_inscritos"
     , NULL AS "id_lista_cruzada"
     , NULL AS "indicador_curso_principal"
@@ -72,8 +72,8 @@ SELECT SSBSECT_CAMP_CODE AS "id_campus"
     , NULL AS "nombre_actividad"
     , NULL AS "id_liga"
     , NULL AS "indicador_seccion_padre"
-    , NULL AS "id_modalidad"
-    , NULL AS "nombre_modalidad"
+    , SSBSECT_INSM_CODE AS "id_modalidad"
+    , SSBSECT_INSM_CODE AS "nombre_modalidad"
 FROM ODSMGR.LOE_SSBSECT, ODSMGR.SSRMEET, ODSMGR.COURSE_CATALOG
 WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
     AND SSBSECT_SSTS_CODE = 'A' AND SSBSECT_MAX_ENRL > 0 AND SSBSECT_ENRL > 0
@@ -82,48 +82,79 @@ WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
     AND LAB_MIN IS NOT NULL AND LAB_MIN > 0
     AND STATUS = 'A' AND COLLEGE <> 'GR'
     AND SSBSECT_SUBJ_CODE NOT IN ('ACAD','REPS','TEST','XPEN','XSER')
-    AND SSBSECT_TERM_CODE IN ('219435');
+    AND SSBSECT_TERM_CODE IN ('220435');
 
 --ProgramacionClases_yyyymmdd.csv
-SELECT SSBSECT_CAMP_CODE AS "id_campus"
-    , SSBSECT_TERM_CODE AS "id_periodo_academico"
-    , 'JORNADA UNICA' AS "id_jornada"
-    , SSRMEET_CATAGORY AS "id_categoria"
-    , SSBSECT_CRN AS "id_seccion"
-    , NULL AS "codigo_grupo"
-    , NULL AS "id_actividad"
-    , NULL AS "nombre_actividad"
-    , CASE SUBSTR(SSRMEET_SUN_DAY||SSRMEET_MON_DAY||SSRMEET_TUE_DAY||SSRMEET_WED_DAY||SSRMEET_THU_DAY||SSRMEET_FRI_DAY||SSRMEET_SAT_DAY,1,1)         
-        WHEN 'M' THEN 1 --LUNES 
-        WHEN 'T' THEN 2 --MARTES 
-        WHEN 'W' THEN 3 --MIERCOLES 
-        WHEN 'R' THEN 4 --JUEVES 
-        WHEN 'F' THEN 5 --VIERNES 
-        WHEN 'S' THEN 6 --SABADO 
-        WHEN 'U' THEN 7 --DOMINGO 
-        ELSE NULL END AS "nro_dia"
-    , SUBSTR(SSRMEET_BEGIN_TIME,1,2) ||':'|| SUBSTR(SSRMEET_BEGIN_TIME,3,2) AS "hora_inicio"
-    , SUBSTR(SSRMEET_END_TIME,1,2) ||':'|| SUBSTR(SSRMEET_END_TIME,3,2) AS "hora_termino"
-    , NULL AS "nro_modulo"
-    , SSRMEET_BLDG_CODE ||'-'|| SSRMEET_ROOM_CODE AS "id_salon"
-    , TO_CHAR(SSRMEET_START_DATE,'YYYY-MM-DD') AS "fecha_inicio"
-    , TO_CHAR(SSRMEET_END_DATE,'YYYY-MM-DD') AS "fecha_termino"
-FROM ODSMGR.LOE_SSBSECT, ODSMGR.SSRMEET
-WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
-    AND SSBSECT_SSTS_CODE = 'A' AND SSBSECT_MAX_ENRL > 0 AND SSBSECT_ENRL > 0
-    AND SSBSECT_SUBJ_CODE NOT IN ('ACAD','REPS','TEST','XPEN','XSER')
-    AND SSBSECT_TERM_CODE IN ('219435');
+SELECT A."id_campus", A."id_periodo_academico", A."id_jornada", A."id_categoria", A."id_seccion", A."codigo_grupo", B.ACTIVIDAD AS "id_actividad", B.ACTIVIDAD AS "nombre_actividad"
+	, A."nro_dia", A."hora_inicio", A."hora_termino", A."nro_modulo", A."id_salon", A."fecha_inicio", A."fecha_termino"
+FROM ( SELECT SSBSECT_CAMP_CODE AS "id_campus"
+		    , SSBSECT_TERM_CODE AS "id_periodo_academico"
+		    , 'JORNADA UNICA' AS "id_jornada"
+		    , SSRMEET_CATAGORY AS "id_categoria"
+		    , SSBSECT_CRN AS "id_seccion"
+		    , 0 AS "codigo_grupo"
+		    , NULL AS "id_actividad"
+		    , NULL AS "nombre_actividad"
+		    , CASE SUBSTR(COALESCE(SSRMEET_SUN_DAY,'')||COALESCE(SSRMEET_MON_DAY,'')||COALESCE(SSRMEET_TUE_DAY,'')||COALESCE(SSRMEET_WED_DAY,'')||COALESCE(SSRMEET_THU_DAY,'')||COALESCE(SSRMEET_FRI_DAY,'')||COALESCE(SSRMEET_SAT_DAY,''),1,1) 
+		        WHEN 'M' THEN 1 --LUNES 
+		        WHEN 'T' THEN 2 --MARTES 
+		        WHEN 'W' THEN 3 --MIERCOLES 
+		        WHEN 'R' THEN 4 --JUEVES 
+		        WHEN 'F' THEN 5 --VIERNES 
+		        WHEN 'S' THEN 6 --SABADO 
+		        WHEN 'U' THEN 7 --DOMINGO 
+		        ELSE NULL END AS "nro_dia"
+		    , SUBSTR(SSRMEET_BEGIN_TIME,1,2) ||':'|| SUBSTR(SSRMEET_BEGIN_TIME,3,2) AS "hora_inicio"
+		    , SUBSTR(SSRMEET_END_TIME,1,2) ||':'|| SUBSTR(SSRMEET_END_TIME,3,2) AS "hora_termino"
+		    , NULL AS "nro_modulo"
+		    , SSRMEET_BLDG_CODE ||'-'|| SSRMEET_ROOM_CODE AS "id_salon"
+		    , TO_CHAR(SSRMEET_START_DATE,'YYYY-MM-DD') AS "fecha_inicio"
+		    , TO_CHAR(SSRMEET_END_DATE,'YYYY-MM-DD') AS "fecha_termino"
+		    , ROW_NUMBER() OVER(PARTITION BY SSBSECT_TERM_CODE, SSBSECT_CRN ORDER BY SSRMEET_SURROGATE_ID) AS ORDEN1
+		FROM ODSMGR.LOE_SSBSECT, ODSMGR.SSRMEET
+		WHERE SSBSECT_TERM_CODE = SSRMEET_TERM_CODE AND SSBSECT_CRN = SSRMEET_CRN
+		    AND SSBSECT_SSTS_CODE = 'A' AND SSBSECT_MAX_ENRL > 0 AND SSBSECT_ENRL > 0
+		    AND SSBSECT_SUBJ_CODE NOT IN ('ACAD','REPS','TEST','XPEN','XSER')
+		    AND SSBSECT_TERM_CODE IN ('220435') ) A
+				LEFT JOIN ( SELECT SSBSECT_TERM_CODE, SSBSECT_CRN, ACTIVIDAD
+								, ROW_NUMBER() OVER(PARTITION BY SSBSECT_TERM_CODE, SSBSECT_CRN ORDER BY ACTIVIDAD) AS ORDEN2
+								, COUNT(SSBSECT_CRN) OVER(PARTITION BY SSBSECT_TERM_CODE, SSBSECT_CRN) AS CANT2
+							FROM ( SELECT SSBSECT_TERM_CODE, SSBSECT_CRN, 'HT' AS ACTIVIDAD
+									FROM ODSMGR.LOE_SSBSECT, ODSMGR.COURSE_CATALOG
+									WHERE SSBSECT_SUBJ_CODE = SUBJECT AND SSBSECT_CRSE_NUMB = COURSE_NUMBER AND SSBSECT_TERM_CODE = ACADEMIC_PERIOD
+									    AND LECTURE_MIN IS NOT NULL AND LECTURE_MIN > 0 AND STATUS = 'A' AND COLLEGE <> 'GR'
+									    AND SSBSECT_SSTS_CODE = 'A' AND SSBSECT_MAX_ENRL > 0 AND SSBSECT_ENRL > 0
+									    AND SSBSECT_SUBJ_CODE NOT IN ('ACAD','REPS','TEST','XPEN','XSER')
+									    AND SSBSECT_TERM_CODE IN ('220435')
+									UNION
+									SELECT SSBSECT_TERM_CODE, SSBSECT_CRN, 'HP' AS ACTIVIDAD
+									FROM ODSMGR.LOE_SSBSECT, ODSMGR.COURSE_CATALOG
+									WHERE SSBSECT_SUBJ_CODE = SUBJECT AND SSBSECT_CRSE_NUMB = COURSE_NUMBER AND SSBSECT_TERM_CODE = ACADEMIC_PERIOD
+									    AND OTHER_MIN IS NOT NULL AND OTHER_MIN > 0 AND STATUS = 'A' AND COLLEGE <> 'GR'
+									    AND SSBSECT_SSTS_CODE = 'A' AND SSBSECT_MAX_ENRL > 0 AND SSBSECT_ENRL > 0
+									    AND SSBSECT_SUBJ_CODE NOT IN ('ACAD','REPS','TEST','XPEN','XSER')
+									    AND SSBSECT_TERM_CODE IN ('220435')
+									UNION
+									SELECT SSBSECT_TERM_CODE, SSBSECT_CRN, 'HL' AS ACTIVIDAD
+									FROM ODSMGR.LOE_SSBSECT, ODSMGR.COURSE_CATALOG
+									WHERE SSBSECT_SUBJ_CODE = SUBJECT AND SSBSECT_CRSE_NUMB = COURSE_NUMBER AND SSBSECT_TERM_CODE = ACADEMIC_PERIOD
+									    AND LAB_MIN IS NOT NULL AND LAB_MIN > 0 AND STATUS = 'A' AND COLLEGE <> 'GR'
+									    AND SSBSECT_SSTS_CODE = 'A' AND SSBSECT_MAX_ENRL > 0 AND SSBSECT_ENRL > 0
+									    AND SSBSECT_SUBJ_CODE NOT IN ('ACAD','REPS','TEST','XPEN','XSER')
+									    AND SSBSECT_TERM_CODE IN ('220435') )
+							) B ON A."id_periodo_academico" = B.SSBSECT_TERM_CODE AND A."id_seccion" = B.SSBSECT_CRN
+									AND CASE WHEN A.ORDEN1 %B.CANT2 = 0 THEN B.CANT2 ELSE A.ORDEN1 %B.CANT2 END = B.ORDEN2;
 
 --Estudiante_Seccion_yyyymmdd.csv
 SELECT SFRSTCR_TERM_CODE AS "id_periodo_academico"
     , SFRSTCR_CRN AS "id_seccion"
-    , NULL AS "codigo_grupo"
+    , 0 AS "codigo_grupo"
     , SFRSTCR_PIDM AS "id_estudiante"
     , NULL AS "id_plan_estudio"
-    , NULL AS "indicador_sancionado"
+    , 0 AS "indicador_sancionado"
 FROM ODSMGR.SFRSTCR
 WHERE SFRSTCR_RSTS_CODE IN ('RE','RW','RA')
-    AND SFRSTCR_TERM_CODE IN ('219435');
+    AND SFRSTCR_TERM_CODE IN ('220435');
 
 --Docente_Seccion_yyyymmdd.csv
 SELECT DISTINCT SIRASGN_TERM_CODE AS "id_periodo"
@@ -139,7 +170,7 @@ WHERE SIRASGN_PIDM = SIBINST_PIDM
                                     WHERE S1.SIBINST_PIDM = S.SIBINST_PIDM
                                         AND S1.SIBINST_TERM_CODE_EFF < SIRASGN_TERM_CODE)
     AND SIRASGN_PIDM = SPRIDEN_PIDM AND SPRIDEN_CHANGE_IND IS NULL
-    AND SIRASGN_TERM_CODE IN ('219435');
+    AND SIRASGN_TERM_CODE IN ('220435');
 
 --Estudiante_yyyymmdd.csv
 SELECT SPRIDEN_PIDM AS "id_estudiante"
@@ -158,4 +189,4 @@ FROM ODSMGR.LOE_SPRIDEN
 WHERE SPRIDEN_CHANGE_IND IS NULL
     AND SPRIDEN_PIDM IN (SELECT DISTINCT SFRSTCR_PIDM FROM ODSMGR.SFRSTCR
                         WHERE SFRSTCR_RSTS_CODE IN ('RE','RW','RA')
-                            AND SFRSTCR_TERM_CODE IN ('219435'));
+                            AND SFRSTCR_TERM_CODE IN ('220435'));
