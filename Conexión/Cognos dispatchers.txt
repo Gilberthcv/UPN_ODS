@@ -1,0 +1,8 @@
+
+Folder					Function			Port
+/opt/ibm/cognos/analytics/bin64		Gateway				9300
+/opt/ibm/cognos/analytics02/bin64	Presentation Service		10300
+/opt/ibm/cognos/analytics03/bin64	Report Service - 1		11300
+/opt/ibm/cognos/analytics04/bin64	Report Service - 2		12300
+/opt/ibm/cognos/analytics05/bin64	Batch Report Service - 1	13300
+/opt/ibm/cognos/analytics06/bin64	Batch Report Service - 2	14300
