@@ -17,7 +17,7 @@ FROM (
 		spriden_last_name,
 		spriden_first_name
 		--COUNT(distinct SHRTCKN_TERM_CODE)
-	FROM SFRREGP, SHRTCKN, SCREQIV, SHRTCKG, SPRIDEN, SFRSTCR, SSBSECT
+	FROM ODSMGR.SFRREGP, ODSMGR.SHRTCKN, ODSMGR.SCREQIV, ODSMGR.SHRTCKG, ODSMGR.LOE_SPRIDEN, ODSMGR.SFRSTCR, ODSMGR.LOE_SSBSECT
 	WHERE  shrtckn_pidm = sfrregp_pidm
 		AND sfrregp_pidm = sfrstcr_pidm
 		and sfrregp_term_code = sfrstcr_term_code
@@ -31,7 +31,7 @@ FROM (
 		And shrtckn_pidm = shrtckg_pidm 
 		and shrtckn_term_code = shrtckg_term_code
 		and shrtckn_seq_no = shrtckg_tckn_seq_no
-		and shrtckg_grde_code_final  IN (SELECT SHRGRDE_CODE FROM SHRGRDE WHERE SHRGRDE_PASSED_IND = 'Y' OR shrtckg_grde_code_final not like 'R%')
+		and shrtckg_grde_code_final  IN (SELECT SHRGRDE_CODE FROM ODSMGR.SHRGRDE WHERE SHRGRDE_PASSED_IND = 'Y' OR shrtckg_grde_code_final not like 'R%')
 		--   and (shrtckn_subj_code ||shrtckn_crse_numb = sfrregp_subj_code||sfrregp_crse_numb_low
 		and ((shrtckn_subj_code = sfrregp_subj_code and shrtckn_crse_numb = sfrregp_crse_numb_low)  
 				--or screqiv_subj_code||screqiv_crse_numb = sfrregp_subj_code||sfrregp_crse_numb_low)
@@ -54,8 +54,8 @@ FROM (
 	    spriden_last_name,
 	    spriden_first_name
 	) A
-		INNER JOIN SPRIDEN B ON A.SFRREGP_PIDM = B.SPRIDEN_PIDM AND B.SPRIDEN_CHANGE_IND IS NULL
-		INNER JOIN STUDENT_COURSE C ON A.SFRREGP_PIDM = C.PERSON_UID AND A.SFRREGP_TERM_CODE = C.ACADEMIC_PERIOD
+		INNER JOIN ODSMGR.LOE_SPRIDEN B ON A.SFRREGP_PIDM = B.SPRIDEN_PIDM AND B.SPRIDEN_CHANGE_IND IS NULL
+		INNER JOIN ODSMGR.STUDENT_COURSE C ON A.SFRREGP_PIDM = C.PERSON_UID AND A.SFRREGP_TERM_CODE = C.ACADEMIC_PERIOD
 										AND A.SFRREGP_SUBJ_CODE = C.SUBJECT AND A.SFRREGP_CRSE_NUMB_LOW = C.COURSE_NUMBER AND C.REGISTRATION_STATUS IN ('RE','RW','RA','WC','RF','RO','IA')		
-		LEFT JOIN ACADEMIC_STUDY D ON A.SFRREGP_PIDM = D.PERSON_UID AND A.SFRREGP_TERM_CODE = D.ACADEMIC_PERIOD AND D.STUDENT_LEVEL = 'UG' --AND D.CAMPUS IN ('')
+		LEFT JOIN ODSMGR.ACADEMIC_STUDY D ON A.SFRREGP_PIDM = D.PERSON_UID AND A.SFRREGP_TERM_CODE = D.ACADEMIC_PERIOD AND D.STUDENT_LEVEL = 'UG' --AND D.CAMPUS IN ('')
 ;
