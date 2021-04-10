@@ -2,22 +2,51 @@
 SELECT STVTERM_CODE AS "id_periodo_academico"
     , NULL AS "codigo_periodo_academico"
     , STVTERM_DESC AS "nombre_periodo_academico"
-    , STVTERM_CODE AS "codigo_tipo_periodo_academico"
-    , CASE SUBSTR(STVTERM_CODE,4,1)
-    		WHEN '2' THEN 'periodo CURSOS LIBRES'
-            WHEN '3' THEN 'trimestre'
-            WHEN '4' THEN 'cuatrimestre UG'
-            WHEN '5' THEN 'cuatrimestre WA'
-            WHEN '6' THEN 'periodo INCOMPANY'
-            WHEN '7' THEN 'cuatrimestre INGLES'
-            WHEN '8' THEN 'periodo MAESTRIAS'
-            WHEN '9' THEN 'periodo DIPLOMADOS'
-        ELSE NULL END AS "nombre_tipo_periodo_academico"
-    , CASE
-            WHEN SUBSTR(STVTERM_CODE,4,1) IN ('4','5') AND SUBSTR(STVTERM_CODE,5,2) > '00' AND SUBSTR(STVTERM_CODE,5,2) < '09' THEN 0
-            WHEN SUBSTR(STVTERM_CODE,4,1) IN ('4','5') AND SUBSTR(STVTERM_CODE,5,2) > '08' AND SUBSTR(STVTERM_CODE,5,2) < '26' THEN 1
-            WHEN SUBSTR(STVTERM_CODE,4,1) IN ('4','5') AND SUBSTR(STVTERM_CODE,5,2) > '25' AND SUBSTR(STVTERM_CODE,5,2) < '46' THEN 2
-        ELSE 9 END AS "numero_periodo_academico"
+    , CASE 
+    	WHEN STVTERM_CODE > 215400 THEN (
+    		CASE 
+	            WHEN (SUBSTR(STVTERM_CODE,4,1) IN ('4','5') AND SUBSTR(STVTERM_CODE,5,2) > '00' AND SUBSTR(STVTERM_CODE,5,2) < '09')
+	            		OR SUBSTR(STVTERM_CODE,4,1) = '3' OR SUBSTR(STVTERM_DESC,6,1) NOT IN ('1','2','3') THEN 'E'
+	            WHEN SUBSTR(STVTERM_CODE,5,2) > '08' AND SUBSTR(STVTERM_CODE,5,2) < '46' AND SUBSTR(STVTERM_CODE,4,1) = '4' THEN 'S.UG'
+	            WHEN SUBSTR(STVTERM_CODE,5,2) > '08' AND SUBSTR(STVTERM_CODE,5,2) < '46' AND SUBSTR(STVTERM_CODE,4,1) = '5' THEN 'S.WA'
+			END	           
+			)
+		WHEN STVTERM_CODE < 215400 THEN (
+			CASE 
+				WHEN SUBSTR(STVTERM_DESC,6,1) = '0' THEN 'E'
+				WHEN SUBSTR(STVTERM_CODE,5,2) IN ('10','20') THEN 'S.UG'
+				WHEN SUBSTR(STVTERM_CODE,5,2) IN ('30','40','50') THEN 'C.WA'
+				ELSE 'E' END
+			)
+        END AS "codigo_tipo_periodo_academico"
+    , CASE 
+    	WHEN STVTERM_CODE > 215400 THEN (
+    		CASE 
+	            WHEN (SUBSTR(STVTERM_CODE,4,1) IN ('4','5') AND SUBSTR(STVTERM_CODE,5,2) > '00' AND SUBSTR(STVTERM_CODE,5,2) < '09')
+	            		OR SUBSTR(STVTERM_CODE,4,1) = '3' OR SUBSTR(STVTERM_DESC,6,1) NOT IN ('1','2','3') THEN 'Extraordinario'
+	            WHEN SUBSTR(STVTERM_CODE,5,2) > '08' AND SUBSTR(STVTERM_CODE,5,2) < '46' AND SUBSTR(STVTERM_CODE,4,1) = '4' THEN 'Semestre UG'
+	            WHEN SUBSTR(STVTERM_CODE,5,2) > '08' AND SUBSTR(STVTERM_CODE,5,2) < '46' AND SUBSTR(STVTERM_CODE,4,1) = '5' THEN 'Semestre WA'
+			END	           
+			)
+		WHEN STVTERM_CODE < 215400 THEN (
+			CASE 
+				WHEN SUBSTR(STVTERM_DESC,6,1) = '0' THEN 'Extraordinario'
+				WHEN SUBSTR(STVTERM_CODE,5,2) IN ('10','20') THEN 'Semestre UG'
+				WHEN SUBSTR(STVTERM_CODE,5,2) IN ('30','40','50') THEN 'Cuatrimestre WA'
+				ELSE 'Extraordinario' END
+			)
+        END AS "nombre_tipo_periodo_academico"
+    , CASE 
+    	WHEN STVTERM_CODE > 215400 THEN (
+    		CASE
+	            WHEN SUBSTR(STVTERM_CODE,4,1) = '3' THEN 0
+	            WHEN SUBSTR(STVTERM_CODE,4,1) IN ('4','5') AND SUBSTR(STVTERM_CODE,5,2) > '00' AND SUBSTR(STVTERM_CODE,5,2) < '09' THEN 0
+	            WHEN SUBSTR(STVTERM_CODE,4,1) IN ('4','5') AND SUBSTR(STVTERM_CODE,5,2) > '08' AND SUBSTR(STVTERM_CODE,5,2) < '26' THEN 1
+	            WHEN SUBSTR(STVTERM_CODE,4,1) IN ('4','5') AND SUBSTR(STVTERM_CODE,5,2) > '25' AND SUBSTR(STVTERM_CODE,5,2) < '46' THEN 2
+			ELSE 9 END	           
+			)
+		WHEN STVTERM_CODE < 215400 THEN TO_NUMBER(SUBSTR(STVTERM_DESC,6,1))
+        END AS "numero_periodo_academico"
     , STVTERM_ACYR_CODE AS "agno_periodo_academico"
     , 1 AS "indicador_periodo_regular"
     , NULL AS "numero_semanas"
@@ -28,4 +57,7 @@ SELECT STVTERM_CODE AS "id_periodo_academico"
     	THEN 1 ELSE 0 END AS "indicador_programable"
 FROM ODSMGR.LOE_STVTERM
 		LEFT JOIN ODSMGR.LOE_SECTION_PART_OF_TERM ON STVTERM_CODE = TERM_CODE
+WHERE (STVTERM_CODE > 215400 AND SUBSTR(STVTERM_CODE,4,1) IN ('3','4','5') AND SUBSTR(STVTERM_CODE,5,2) < '46' AND STVTERM_DESC NOT LIKE '%Int%Dob%Tit%')
+	OR (STVTERM_CODE < 215400 AND SUBSTR(STVTERM_DESC,5,1) = '-')
+--ORDER BY 1 DESC
 ;
